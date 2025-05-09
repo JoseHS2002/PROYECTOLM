@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map { height: 600px; }
-        #search { margin: 10px; }
     </style>
 </head>
 <body>
-    <input type="text" id="search" placeholder="Buscar punto..." />
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+    <script>
+        const map = L.map('map').setView([41.50322, -5.74567], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        const marker = L.marker([41.50322, -5.74567]).addTo(map);
+        marker.bindPopup('Ubicación seleccionada').openPopup();
+    </script>
 </body>
 </html>
