@@ -1,7 +1,6 @@
 // Inicializa el mapa
-const map = L.map('map').setView([0, 0], 2); // Cambia las coordenadas y el zoom según necesites
+const map = L.map('map').setView([41.50322, -5.74567], 16); // Centrado en las coordenadas
 
-// Carga el mapa base
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
 }).addTo(map);
@@ -12,9 +11,12 @@ const puntos = [
     { nombre: "Punto 2", lat: 34.0522, lon: -118.2437, pregunta: "¿Cuál es la capital de California?", respuestas: ["San Francisco", "Los Ángeles", "Sacramento", "San Diego", "Fresno"], correcta: 2 }
 ];
 
+
+
 // Agregar marcadores al mapa
 puntos.forEach(punto => {
-    const marker = L.marker([punto.lat, punto.lon]).addTo(map);
+    const marker = L.marker([41.50322, -5.74567]).addTo(map);
+    marker.bindPopup('Ubicación seleccionada').openPopup();
     marker.bindPopup(punto.nombre);
 
     // Evento al hacer clic en el marcador
