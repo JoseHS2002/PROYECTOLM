@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Geolocalización</title>
+</head>
+<body>
+
+<p>Tu ubicación es:</p>
+<div id="ubicacion"></div>
+
+<script>
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      document.getElementById("ubicacion").innerHTML = "Latitud: " + pos.coords.latitude + ", Longitud: " + pos.coords.longitude;
+    },
+    function(error) {
+      document.getElementById("ubicacion").innerHTML = "Error al obtener la ubicación: " + error.message;
+    }
+  );
+} else {
+  document.getElementById("ubicacion").innerHTML = "Tu navegador no soporta la geolocalización.";
+}
+</script>
+
+</body>
+</html>
