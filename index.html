@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Zamora</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 400px; }
+    </style>
+</head>
+<body>
+    <h1>Preguntas sobre iglesias de Zamora</h1>
+    <div id="map"></div>
+    <input type="text" id="urlInput" placeholder="Introduce la URL" />
+    <button id="scrapeButton">Buscar</button>
+    <pre id="output"></pre>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="renderer.js"></script>
+    <script>
+        // Inicializa el mapa
+        const map = L.map('map').setView([41.50580, -5.74567], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+        //verticalmente, horizontalmente
+        //>bajar;>izquierda
+        const marker1 = L.marker([41.50335, -5.74700]).addTo(map);
+        marker1.bindPopup('Iglesia San Juan Bautista').openPopup();
+        const marker2 = L.marker([41.50355, -5.74360]).addTo(map);
+        marker2.bindPopup('Iglesia San Andrés').openPopup();
+        const marker3 = L.marker([41.50820, -5.74325]).addTo(map);
+        marker3.bindPopup('Ermita del Carmen').openPopup();
+        const marker4 = L.marker([41.50440, -5.74620]).addTo(map);
+        marker4.bindPopup('Iglesia San Vicente Martir').openPopup();
+        const marker5 = L.marker([41.50550, -5.74720]).addTo(map);
+        marker5.bindPopup('Iglesia San Antolin').openPopup();
+        const marker6 = L.marker([41.50605, -5.74550]).addTo(map);
+        marker6.bindPopup('Iglesia San Esteban').openPopup();
+        const marker7 = L.marker([41.50510, -5.74435]).addTo(map);
+        marker7.bindPopup('Iglesia Santiago el Burgo').openPopup();
+
+    </script>
+</body>
+</html>
