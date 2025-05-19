@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map { height: 400px; }
+        .question-container { display: none; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -15,31 +16,72 @@
     <input type="text" id="urlInput" placeholder="Introduce la URL" />
     <button id="scrapeButton">Buscar</button>
     <pre id="output"></pre>
+    
+    <!-- Contenedor para la pregunta y opciones -->
+    <div class="question-container" id="questionContainer">
+        <h2 id="questionText"></h2>
+        <ul id="optionsList"></ul>
+    </div>
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="renderer.js"></script>
+    <script src="questions.js"></script>
     <script>
         // Inicializa el mapa
         const map = L.map('map').setView([41.50580, -5.74567], 16);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
-        //verticalmente, horizontalmente
-        //>bajar;>izquierda
-        const marker1 = L.marker([41.50335, -5.74700]).addTo(map);
-        marker1.bindPopup('Iglesia San Juan Bautista').openPopup();
-        const marker2 = L.marker([41.50355, -5.74360]).addTo(map);
-        marker2.bindPopup('Iglesia San Andrés').openPopup();
-        const marker3 = L.marker([41.50820, -5.74325]).addTo(map);
-        marker3.bindPopup('Ermita del Carmen').openPopup();
-        const marker4 = L.marker([41.50440, -5.74620]).addTo(map);
-        marker4.bindPopup('Iglesia San Vicente Martir').openPopup();
-        const marker5 = L.marker([41.50550, -5.74720]).addTo(map);
-        marker5.bindPopup('Iglesia San Antolin').openPopup();
-        const marker6 = L.marker([41.50605, -5.74550]).addTo(map);
-        marker6.bindPopup('Iglesia San Esteban').openPopup();
-        const marker7 = L.marker([41.50510, -5.74435]).addTo(map);
-        marker7.bindPopup('Iglesia Santiago el Burgo').openPopup();
 
+        // Marcadores de las iglesias
+        const markers = [
+            { coords: [41.50335, -5.74700], popup: 'Iglesia San Juan Bautista', questionId: 1 },
+            { coords: [41.50355, -5.74360], popup: 'Iglesia San Andrés', questionId: 2 },
+            { coords: [41.50820, -5.74325], popup: 'Ermita del Carmen', questionId: 3 },
+            { coords: [41.50440, -5.74620], popup: 'Iglesia San Vicente Martir', questionId: 4 },
+            { coords: [41.50550, -5.74720], popup: 'Iglesia San Antolin', questionId: 5 },
+            { coords: [41.50605, -5.74550], popup: 'Iglesia San Esteban', questionId: 6 },
+            { coords: [41.50510, -5.74435], popup: 'Iglesia Santiago el Burgo', questionId: 7 },
+            { coords: [41.50720, -5.74410], popup: 'Iglesia San Torcuato', questionId: 8 },
+            { coords: [41.50210, -5.74520], popup: 'Iglesia San Leonardo', questionId: 9 },
+            { coords: [41.50145, -5.74453], popup: 'Iglesia Santa Maria de la Horta', questionId: 10 },
+            { coords: [41.50135, -5.74280], popup: 'Iglesia Santo Tomé', questionId: 11},
+            { coords: [41.50125, -5.74750], popup: 'Iglesia Santa Lucia', questionId: 12},
+            { coords: [41.50145, -5.74820], popup: 'Iglesia San Cipriano', questionId: 13},
+            { coords: [41.50720, -5.73640], popup: 'Iglesia Cristo Rey', questionId: 14 },
+            { coords: [41.50420, -5.73245], popup: 'Ermita Peña de Francia', questionId: 15 },
+            { coords: [41.50130, -5.75035], popup: 'Iglesia Santa Maria Magdalena', questionId: 16},
+            { coords: [41.5033, -5.74930], popup: 'Iglesia Santa Maria la Nueva', questionId: 17 },
+
+
+        ];
+
+        markers.forEach(markerData => {
+            const marker = L.marker(markerData.coords).addTo(map);
+            marker.bindPopup(markerData.popup);
+            marker.on('click', () => showQuestion(markerData.questionId));
+        });
+
+        // Función para mostrar la pregunta
+        function showQuestion(questionId) {
+            const questionContainer = document.getElementById('questionContainer');
+            const questionText = document.getElementById('questionText');
+            const optionsList = document.getElementById('optionsList');
+            
+            const question = questions[questionId - 1]; // Obtener la pregunta correspondiente
+
+            questionText.innerText = question.question;
+            optionsList.innerHTML = ''; // Limpiar opciones anteriores
+
+            question.options.forEach(option => {
+                const li = document.createElement('li');
+                li.innerText = option.text;
+                li.addEventListener('click', () => alert(option.correct ? '¡Correcto!' : 'Incorrecto. Intenta de nuevo.'));
+                optionsList.appendChild(li);
+            });
+
+            questionContainer.style.display = 'block'; // Mostrar contenedor de preguntas
+        }
     </script>
 </body>
 </html>
