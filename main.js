@@ -1,44 +1,32 @@
-// main.js
-const { app, BrowserWindow, ipcMain } = require('electron');
-const puppeteer = require('puppeteer');
-
-let mainWindow;
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
+    const win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-            preload: __dirname + '/renderer.js',
+            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
-            enableRemoteModule: false,
-            nodeIntegration: false,
-        },
+            nodeIntegration: false // Deshabilitado para mayor seguridad
+        }
     });
 
-    mainWindow.loadFile('index.html');
-
-    mainWindow.on('closed', function () {
-        mainWindow = null;
-    });
+    win.loadFile('indexC.html');
 }
 
-// Manejar la solicitud de Puppeteer desde el renderer
-ipcMain.handle('run-puppeteer', async (event, url) => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(url);
-    const content = await page.content();
-    await browser.close();
-    return content; // Retornar el contenido de la página
+app.whenReady().then(() => {
+    createWindow();
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
 });
 
-app.on('ready', createWindow);
-
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
-});
-
-app.on('activate', function () {
-    if (mainWindow === null) createWindow();
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
