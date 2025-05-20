@@ -1,5 +1,22 @@
 [
   {
+    "title": "ies la mar",
+    "description": "un instituto de javea",
+    "question": "Cual FP no puedes hacer",
+    "options": [
+      "SMX",
+      "IA",
+      "DAM",
+      "Seguridad"
+    ],
+    "correctOption": "1",
+    "lat": 3847192,
+    "lng": 10356
+  }
+]
+
+/*[
+  {
     "title": "Iglesia Zamora",
     "description": "Una iglesia de Zamora",
     "question": "¿Que es una iglesia?",
@@ -27,4 +44,4 @@
     "lat": 3847192,
     "lng": 10356
   }
-]
+]*/
