@@ -116,26 +116,27 @@
                 });
             } else { // Si no está cerca
                 infoContainer.innerHTML = `
-                    <h3>${markerData.title}</h3>
-                    <p>${markerData.description}</p>
-                    <button id="showQuestionButton">Mostrar Pregunta</button>
-                `;
-                document.getElementById('showQuestionButton').addEventListener('click', () => {
-                    infoContainer.innerHTML = `
-                        <h3>${markerData.title}</h3>
-                        <p>${markerData.description}</p>
-                        <p>${markerData.question}</p>
-                        <div id="options"></div>
-                    `;
-                    const optionsContainer = document.getElementById('options');
-                    markerData.options.forEach((option, index) => {
-                        const optionDiv = document.createElement('div');
-                        optionDiv.className = 'option';
-                        optionDiv.innerText = `${index + 1}. ${option}`;
-                        optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption));
-                        optionsContainer.appendChild(optionDiv);
-                    });
-                });
+            <h3>${markerData.title}</h3>
+            <p>${markerData.description}</p>
+            <button id="showQuestionButton">Mostrar Pregunta</button>
+        `;
+        const showQuestionButton = infoContainer.querySelector('#showQuestionButton'); // Cambiado
+        showQuestionButton.addEventListener('click', () => {
+            infoContainer.innerHTML = `
+                <h3>${markerData.title}</h3>
+                <p>${markerData.description}</p>
+                <p>${markerData.question}</p>
+                <div id="options"></div>
+            `;
+            const optionsContainer = infoContainer.querySelector('#options'); // Cambiado
+            markerData.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.innerText = `${index + 1}. ${option}`;
+                optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption, optionDiv)); // Añadido optionDiv
+                optionsContainer.appendChild(optionDiv);
+            });
+        });
             }
 
             infoContainer.style.display = 'block';
