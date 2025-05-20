@@ -1,0 +1,22 @@
+{
+  "name": "electron-ttlm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ./main.js"
+  },
+  "keywords": [
+    "electron",
+    "leaflet",
+    "openstreetmap"
+  ],
+  "author": "JoseHS",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^35.1.2"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  }
+}
