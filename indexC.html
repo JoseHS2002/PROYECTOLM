@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Marcadores del Pueblo</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-    body {
-      background-color: blue;
-    }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Marcadores</title>
 </head>
 <body>
-    <h1>Crear Marcador</h1>
+    <h1>Crear Marcadores</h1>
     <form id="markerForm">
         <label for="title">Título del lugar:</label>
         <input type="text" id="title" required><br>
@@ -47,14 +42,10 @@
         <button type="submit">Crear Marcador</button>
     </form>
 
-    <div id="map" style="height: 500px;"></div>
+    <button id="exportButton">Exportar Marcadores</button>
 
     <script>
-        const map = L.map('map').setView([41.5, -5.7], 13); // Coordenadas de Zamora
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
+        const markersData = [];
 
         document.getElementById('markerForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -71,12 +62,22 @@
             const lat = parseFloat(document.getElementById('lat').value);
             const lng = parseFloat(document.getElementById('lng').value);
 
-            // Añadir el marcador al mapa
-            L.marker([lat, lng]).addTo(map)
-                .bindPopup(`<b>${title}</b><br>${description}<br><br>${question}<br>${options.join('<br>')}<br>Respuesta correcta: Opción ${correctOption}`).openPopup();
+            // Añadir el marcador al array
+            markersData.push({ title, description, question, options, correctOption, lat, lng });
 
             // Limpiar el formulario
             this.reset();
+        });
+
+        document.getElementById('exportButton').addEventListener('click', function() {
+            const json = JSON.stringify(markersData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'marcadores.json';
+            a.click();
+            URL.revokeObjectURL(url);
         });
     </script>
 </body>
