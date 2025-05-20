@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marcadores del Pueblo - Móvil</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
-            margin: 0; /* Elimina el margen por defecto del body */
-            overflow: hidden; /* Evita las barras de desplazamiento */
+            margin: 0;
+            overflow: hidden;
         }
         #map {
-            position: fixed; /* Fija el mapa a la pantalla */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Asegura que el mapa esté en la parte inferior */
+            z-index: 0;
         }
         #questionContainer {
-            position: absolute; /* Posiciona el contenedor de preguntas de forma absoluta */
-            bottom: 20px; /* Posiciona el contenedor en la parte inferior */
+            position: absolute;
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%); /* Centra el contenedor horizontalmente */
+            transform: translateX(-50%);
             background-color: white;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            z-index: 1; /* Asegura que el contenedor esté por encima del mapa */
+            z-index: 1;
             display: none;
         }
         .option {
@@ -69,28 +71,19 @@
         let userLocation = null;
         let currentMarker = null;
         let score = 0;
+        let markersData = [];
 
-        // Datos de los marcadores (deberían ser cargados desde un archivo JSON en una aplicación real)
-        const markersData = [
-            {
-                title: "Plaza Mayor",
-                description: "El corazón de Zamora",
-                question: "¿Qué estilo arquitectónico predomina en la Plaza Mayor?",
-                options: ["Románico", "Gótico", "Renacentista", "Barroco"],
-                correctOption: 4,
-                lat: 41.5021,
-                lng: -5.7444
-            },
-            {
-                title: "Catedral de Zamora",
-                description: "Una joya del románico",
-                question: "¿Qué elemento es característico de la Catedral de Zamora?",
-                options: ["Torre", "Cúpula", "Rosetón", "Claustro"],
-                correctOption: 2,
-                lat: 41.5028,
-                lng: -5.7433
-            }
-        ];
+        // Cargar marcadores desde el archivo JSON
+        fetch('marcadores.json')
+            .then(response => response.json())
+            .then(data => {
+                markersData = data;
+                markersData.forEach(markerData => {
+                    L.marker([markerData.lat, markerData.lng]).addTo(map)
+                        .bindPopup(markerData.title);
+                });
+            })
+            .catch(error => console.error('Error al cargar los marcadores:', error));
 
         // Función para calcular la distancia entre dos puntos (en metros)
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -101,8 +94,8 @@
             const Δλ = (lon2-lon1) * Math.PI/180;
 
             const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                    Math.cos(φ1) * Math.cos(φ2) *
-                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
             return R * c;
