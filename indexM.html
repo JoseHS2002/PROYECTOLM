@@ -5,33 +5,60 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
-        #map { height: 400px; }
+        body {
+            margin: 0; /* Elimina el margen por defecto del body */
+            overflow: hidden; /* Evita las barras de desplazamiento */
+        }
+        #map {
+            position: fixed; /* Fija el mapa a la pantalla */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Asegura que el mapa esté en la parte inferior */
+        }
         #questionContainer {
+            position: absolute; /* Posiciona el contenedor de preguntas de forma absoluta */
+            bottom: 20px; /* Posiciona el contenedor en la parte inferior */
+            left: 50%;
+            transform: translateX(-50%); /* Centra el contenedor horizontalmente */
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Asegura que el contenedor esté por encima del mapa */
             display: none;
-            padding: 10px;
-            border: 1px solid #ccc;
-            margin-top: 10px;
         }
         .option {
-            margin-bottom: 5px;
-            padding: 5px;
-            border: 1px solid #eee;
+            margin-bottom: 8px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
             cursor: pointer;
+            background-color: #f9f9f9;
         }
         .option:hover {
-            background-color: #f0f0f0;
+            background-color: #e9e9e9;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <h1>Explora el Pueblo - Móvil</h1>
     <div id="map"></div>
     <div id="questionContainer">
         <h3 id="question"></h3>
         <div id="options"></div>
         <p id="feedback"></p>
     </div>
-    <p>Puntos: <span id="score">0</span></p>
+    <span id="score">Puntos: 0</span>
 
     <script>
         const map = L.map('map').setView([41.5, -5.7], 13); // Coordenadas de Zamora
@@ -103,7 +130,7 @@
             if (selectedOption === currentMarker.correctOption) {
                 feedback.innerText = "¡Correcto! +1 punto";
                 score++;
-                document.getElementById('score').innerText = score;
+                document.getElementById('score').innerText = "Puntos: " + score;
             } else {
                 feedback.innerText = "Incorrecto. Inténtalo de nuevo.";
             }
