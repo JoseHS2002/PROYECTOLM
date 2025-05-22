@@ -5,17 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-    body {
-      background-color: blue;
-      text-align: center;
-    }
-    #map { height: 400px; }
-        .question-container { display: none; margin-top: 20px; }
+        body {
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+        #map {
+            height: 400px;
+            margin-bottom: 20px; /* Espacio entre el mapa y el formulario */
+        }
+        .question-container {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
     <title>Crear Marcadores</title>
 </head>
-<body style>
+<body>
     <h1>Crear Marcadores</h1>
+
+    <div id="map"></div>
+
     <form id="markerForm">
         <label for="title">Título del lugar:</label>
         <input type="text" id="title" required><br>
@@ -43,52 +53,59 @@
             <option value="4">Opción 4</option>
         </select><br>
 
-        <label for="lat">Latitud:</label>
-        <input type="number" id="lat" step="0.000001" required><br>
-        <label for="lng">Longitud:</label>
-        <input type="number" id="lng" step="0.000001" required><br>
-
         <button type="submit">Crear Marcador</button>
     </form>
 
     <button id="exportButton">Exportar Marcadores</button>
 
-    <div id="map"></div>
-
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="renderer.js"></script>
-    <script src="questions.js"></script>
-
     <script>
-
         // Inicializa el mapa
-        const map = L.map('map').setView([41.50580, -5.74567], 16);
+        const map = L.map('map').setView([41.50580, -5.74567], 16); // Coordenadas iniciales y zoom
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
 
         const markersData = [];
 
-        document.getElementById('markerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-            const question = document.getElementById('question').value;
-            const options = [
-                document.getElementById('option1').value,
-                document.getElementById('option2').value,
-                document.getElementById('option3').value,
-                document.getElementById('option4').value
-            ];
-            const correctOption = document.getElementById('correctOption').value;
-            const lat = parseFloat(document.getElementById('lat').value);
-            const lng = parseFloat(document.getElementById('lng').value);
+        // Función para agregar un marcador al mapa
+        function addMarkerToMap(lat, lng, title, description, question, options, correctOption) {
+            const marker = L.marker([lat, lng]).addTo(map);
+            marker.bindPopup(`<b>${title}</b><br>${description}`); // Muestra título y descripción al hacer clic
+        }
 
-            // Añadir el marcador al array
-            markersData.push({ title, description, question, options, correctOption, lat, lng });
+        // Evento para agregar marcadores al hacer clic en el mapa
+        map.on('click', function(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
 
-            // Limpiar el formulario
-            this.reset();
+            // Abre el formulario para ingresar la información del marcador
+            document.getElementById('markerForm').style.display = 'block';
+
+            // Al enviar el formulario, guarda los datos y agrega el marcador al mapa
+            document.getElementById('markerForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+                const question = document.getElementById('question').value;
+                const options = [
+                    document.getElementById('option1').value,
+                    document.getElementById('option2').value,
+                    document.getElementById('option3').value,
+                    document.getElementById('option4').value
+                ];
+                const correctOption = document.getElementById('correctOption').value;
+
+                // Añadir el marcador al array
+                markersData.push({ title, description, question, options, correctOption, lat, lng });
+
+                // Agregar el marcador al mapa
+                addMarkerToMap(lat, lng, title, description, question, options, correctOption);
+
+                // Limpiar el formulario y ocultarlo
+                this.reset();
+                document.getElementById('markerForm').style.display = 'none';
+            });
         });
 
         document.getElementById('exportButton').addEventListener('click', function() {
