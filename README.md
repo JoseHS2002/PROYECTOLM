@@ -9,13 +9,17 @@ Paso 1: Poner la información y pinchar donde quieres crear el marcador.
 <img src="https://josehs2002.github.io/PROYECTOLM/M1.png">
 
 Paso 2: Pulsa en "Exportar marcadores" para crear un archivo y luego subirlo para poder ser visto por los usuarios del móvil.
+
 <img src="https://josehs2002.github.io/PROYECTOLM/M2.png">
 
 Información que ve el usuario del pc después de crear el marcador
+
 <img src="https://josehs2002.github.io/PROYECTOLM/M3.png">
 
 Paso 3: Una vez subido el archivo, el usuario de móbil puede ver el marcador en el mapa
+
 <img src="https://josehs2002.github.io/PROYECTOLM/M4.png">
 
 Información que ve el usuario del móvil al pulsar en el marcador.
+
 <img src="https://josehs2002.github.io/PROYECTOLM/M5.png">
