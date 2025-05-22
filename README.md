@@ -7,3 +7,4 @@ Faltan cosas, acepto un 6.
 Pasos:
 Paso 1: Poner la información y pinchar donde quieres crear el marcador.
 https://josehs2002.github.io/PROYECTOLM/M1.png
+
