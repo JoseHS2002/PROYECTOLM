@@ -7,3 +7,5 @@ Faltan cosas, acepto un 6.
 Pasos:
 Paso 1: Poner la información y pinchar donde quieres crear el marcador.
 <img src="https://josehs2002.github.io/PROYECTOLM/M1.png">
+Paso 2: Pulsa en "Exportar marcadores" para crear un archivo y luego subirlo para poder ser visto por los usuarios del móvil.
+<img src="https://josehs2002.github.io/PROYECTOLM/M2.png">
