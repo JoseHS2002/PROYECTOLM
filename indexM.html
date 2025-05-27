@@ -94,33 +94,41 @@
 
         // Función para mostrar la información del marcador
         function showInfo(markerData) {
-            const distance = userLocation ? calculateDistance(userLocation.lat, userLocation.lng, markerData.lat, markerData.lng) : Infinity;
-            const infoContainer = document.createElement('div');
-            infoContainer.className = 'info-container';
-            document.body.appendChild(infoContainer);
+    const distance = userLocation ? calculateDistance(userLocation.lat, userLocation.lng, markerData.lat, markerData.lng) : Infinity;
+    const infoContainer = document.createElement('div');
+    infoContainer.className = 'info-container';
+    document.body.appendChild(infoContainer);
 
-            if (distance <= 50) { // Si está cerca
-                infoContainer.innerHTML = `
-                    <h3>${markerData.title}</h3>
-                    <p>${markerData.description}</p>
-                    <p>${markerData.question}</p>
-                    <div id="options"></div>
-                `;
-                const optionsContainer = document.getElementById('options');
-                markerData.options.forEach((option, index) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    optionDiv.innerText = `${index + 1}. ${option}`;
-                    optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption));
-                    optionsContainer.appendChild(optionDiv);
-                });
-            } else { // Si no está cerca
-                infoContainer.innerHTML = `
+    // Función para cerrar el contenedor al hacer clic fuera
+    function closeInfoContainer(event) {
+        if (!infoContainer.contains(event.target) && event.target !== infoContainer && event.target !== document.body) {
+            infoContainer.remove();
+            document.removeEventListener('click', closeInfoContainer); // Eliminar el listener
+        }
+    }
+
+    if (distance <= 50) { // Si está cerca
+        infoContainer.innerHTML = `
+            <h3>${markerData.title}</h3>
+            <p>${markerData.description}</p>
+            <p>${markerData.question}</p>
+            <div id="options"></div>
+        `;
+        const optionsContainer = document.getElementById('options');
+        markerData.options.forEach((option, index) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.innerText = `${index + 1}. ${option}`;
+            optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption));
+            optionsContainer.appendChild(optionDiv);
+        });
+    } else { // Si no está cerca
+        infoContainer.innerHTML = `
             <h3>${markerData.title}</h3>
             <p>${markerData.description}</p>
             <button id="showQuestionButton">Mostrar Pregunta</button>
         `;
-        const showQuestionButton = infoContainer.querySelector('#showQuestionButton'); // Cambiado
+        const showQuestionButton = infoContainer.querySelector('#showQuestionButton');
         showQuestionButton.addEventListener('click', () => {
             infoContainer.innerHTML = `
                 <h3>${markerData.title}</h3>
@@ -128,24 +136,27 @@
                 <p>${markerData.question}</p>
                 <div id="options"></div>
             `;
-            const optionsContainer = infoContainer.querySelector('#options'); // Cambiado
+            const optionsContainer = infoContainer.querySelector('#options');
             markerData.options.forEach((option, index) => {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'option';
                 optionDiv.innerText = `${index + 1}. ${option}`;
-                optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption, optionDiv)); // Añadido optionDiv
+                optionDiv.addEventListener('click', () => checkAnswer(index + 1, markerData.correctOption, optionDiv));
                 optionsContainer.appendChild(optionDiv);
             });
         });
-            }
+    }
 
-            infoContainer.style.display = 'block';
-            infoContainer.style.position = 'absolute';
-            infoContainer.style.top = '50%';
-            infoContainer.style.left = '50%';
-            infoContainer.style.transform = 'translate(-50%, -50%)';
-        }
+    infoContainer.style.display = 'block';
+    infoContainer.style.position = 'absolute';
+    infoContainer.style.top = '50%';
+    infoContainer.style.left = '50%';
+    infoContainer.style.transform = 'translate(-50%, -50%)';
 
+    // Agregar el listener para cerrar el contenedor al hacer clic fuera
+    document.addEventListener('click', closeInfoContainer);
+}
+        
         // Función para verificar la respuesta
         function checkAnswer(selectedOption, correctOption) {
             const feedback = document.createElement('div');
